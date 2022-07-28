@@ -15,3 +15,15 @@ export function getAllSpecialities() {
         return data;
     });
 }
+export function postSpeciality(speciality) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(baseUrl + '/create/speciality', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(speciality)
+        });
+        return response;
+    });
+}

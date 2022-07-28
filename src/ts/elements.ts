@@ -26,19 +26,22 @@ function display(speciality:specialityI){
     h3.innerText = "Physician in Charge: Dr. "+ speciality.physicianInCharge;  
     divTitle.append(h2,h3);
     div.append(divTitle);
+    if(speciality.patients!=null){
     speciality.patients.forEach(patient => displayPatient(patient, div));
+    }
 
     const divButtons:HTMLDivElement = document.createElement('div');
     divButtons.id = "buttons";
     divButtons.className = "w-full mt-10 p-6";
     const editButton:HTMLButtonElement = document.createElement('button');
+    editButton.id = `edit-${speciality.specialityId}`
     const createPatientButton:HTMLButtonElement = document.createElement('button');
     editButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
     createPatientButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
-
+    createPatientButton.id = `create-${speciality.specialityId}`
     editButton.innerText = "Edit";
     createPatientButton.innerText = "New Patient";
-    if(speciality.patients.length == 0){
+    if(speciality.patients?.length == 0){
         const deleteButton:HTMLButtonElement = document.createElement('button');
         deleteButton.innerText="Delete";
         deleteButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
@@ -99,5 +102,6 @@ function displayPatient(patient:Patient, divSpeciality: HTMLDivElement){
 
 export{
     specialityContainer,
-    displaySpecialities
+    displaySpecialities,
+    display
 }

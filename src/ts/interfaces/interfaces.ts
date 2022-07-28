@@ -2,7 +2,7 @@ export interface specialityI{
     specialityId: number|null,
     name: string,
     physicianInCharge: string,
-    patients: Patient[]
+    patients: Patient[]|null
 }
 
 export type Patient = {

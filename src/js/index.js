@@ -9,3 +9,4 @@ getAllSpecialities().then(specialities => {
 });
 const newSpecialityButton = document.querySelector('.new-speciality-button');
 newSpecialityButton.addEventListener('click', () => openModal());
+export { specialityState };

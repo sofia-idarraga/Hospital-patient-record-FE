@@ -3,6 +3,7 @@ function displaySpecialities(specialities) {
     specialities.forEach(speciality => display(speciality));
 }
 function display(speciality) {
+    var _a;
     specialityContainer;
     const div = document.createElement('div');
     div.className = "single-speciality-container rounded-lg text-center overflow-hidden w-full" +
@@ -19,17 +20,21 @@ function display(speciality) {
     h3.innerText = "Physician in Charge: Dr. " + speciality.physicianInCharge;
     divTitle.append(h2, h3);
     div.append(divTitle);
-    speciality.patients.forEach(patient => displayPatient(patient, div));
+    if (speciality.patients != null) {
+        speciality.patients.forEach(patient => displayPatient(patient, div));
+    }
     const divButtons = document.createElement('div');
     divButtons.id = "buttons";
     divButtons.className = "w-full mt-10 p-6";
     const editButton = document.createElement('button');
+    editButton.id = `edit-${speciality.specialityId}`;
     const createPatientButton = document.createElement('button');
     editButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
     createPatientButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
+    createPatientButton.id = `create-${speciality.specialityId}`;
     editButton.innerText = "Edit";
     createPatientButton.innerText = "New Patient";
-    if (speciality.patients.length == 0) {
+    if (((_a = speciality.patients) === null || _a === void 0 ? void 0 : _a.length) == 0) {
         const deleteButton = document.createElement('button');
         deleteButton.innerText = "Delete";
         deleteButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
@@ -76,4 +81,4 @@ function displayPatient(patient, divSpeciality) {
     div.append(divButtons);
     divSpeciality.append(div);
 }
-export { specialityContainer, displaySpecialities };
+export { specialityContainer, displaySpecialities, display };

@@ -1,3 +1,7 @@
+import { display } from "../elements.js";
+import { specialityI } from "../interfaces/interfaces.js";
+import { postSpeciality } from "./petitions.js";
+import { specialityState} from "../index.js"
 
 const modal = document.querySelector('#form-new-speciality') as HTMLDivElement;
 
@@ -36,10 +40,36 @@ function openModal(){
             </div>`;
 
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton') as HTMLButtonElement;
-    sendSpecialityButton.addEventListener('click', () => console.log("listening!"));
-
-
+    sendSpecialityButton.addEventListener('click', () => sendSpeciality());
 }
 
+function sendSpeciality(){
+    
+    const nameInput = document.querySelector('#specialityName') as HTMLInputElement;
+    const physicianInput = document.querySelector('#physician') as HTMLInputElement;
+    if(nameInput.value&&physicianInput.value){
+        const newSpeciality: specialityI = {
+            specialityId: null,
+            name: nameInput.value,
+            physicianInCharge: physicianInput.value,
+            patients:null
+        }
+        console.log(newSpeciality);
+
+        postSpeciality(newSpeciality).then(
+            response => {
+              if(response.status === 201){
+                specialityState.push(newSpeciality)
+      
+                display(newSpeciality);  
+                nameInput.value = '';
+                physicianInput.value = '';
+                modal.innerHTML = "";
+                console.log("sended!")
+              }
+            }
+          )
+    }
+}
 
 export {openModal};
