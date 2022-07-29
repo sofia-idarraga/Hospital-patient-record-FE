@@ -1,7 +1,7 @@
-import { display, displayPatient, displaySpecialities } from "../elements.js";
+import { display, displayPatient } from "../elements.js";
 import { Patient, patientI, specialityI } from "../interfaces/interfaces.js";
 import { deletePatient, deleteSpeciality, getAllSpecialities, patchPatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
-import  {specialityState  } from "../index.js"
+import { specialityState } from "../index.js"
 import { formModelPatient, formModelSpeciality } from "../formatHtml.js";
 
 
@@ -16,7 +16,7 @@ function openModal() {
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton') as HTMLButtonElement;
     sendSpecialityButton.addEventListener('click', () => sendSpeciality());
     const closeSpecialityForm = document.querySelector('#closeSpecialityForm') as HTMLButtonElement;
-    closeSpecialityForm.addEventListener('click', ()=>closeModal(modal))
+    closeSpecialityForm.addEventListener('click', () => closeModal(modal))
 
 }
 
@@ -24,26 +24,26 @@ function sendSpeciality() {
 
     const nameInput = document.querySelector('#specialityName') as HTMLInputElement;
     const physicianInput = document.querySelector('#physician') as HTMLInputElement;
-    specialityState.forEach(speciality =>{
-        if(nameInput.value === speciality.name){
+    specialityState.forEach(speciality => {
+        if (nameInput.value === speciality.name) {
             alert("Speciality alredy exist");
             return;
         }
     })
-    
+
     if (nameInput.value && physicianInput.value) {
         const newSpeciality: specialityI = {
-            specialityId: 0,//null,
+            specialityId: 0,
             name: nameInput.value,
             physicianInCharge: physicianInput.value,
-            patients: []//null
+            patients: []
         }
         console.log(newSpeciality);
 
         postSpeciality(newSpeciality).then(
             response => {
                 if (response.status === 201) {
-                    specialityState.push(newSpeciality)      
+                    specialityState.push(newSpeciality)
                     display(newSpeciality);
                     nameInput.value = '';
                     physicianInput.value = '';
@@ -69,7 +69,7 @@ function openPatientModal(speciality: specialityI) {
     const sendPatientButton = document.querySelector('#sendPatientButton') as HTMLButtonElement;
     const closePatientButton = document.querySelector('#closPatientForm') as HTMLButtonElement;
 
-    closePatientButton.addEventListener('click', ()=>
+    closePatientButton.addEventListener('click', () =>
         closeModal(div)
     );
 
@@ -113,10 +113,7 @@ function sendPatient(speciality: specialityI, div: HTMLDivElement) {
                 div.innerHTML = "";
                 console.log("sended!")
                 const divPatients = document.querySelector(`#patients-${speciality.specialityId}`) as HTMLDivElement;
-                displayPatient(newPatient,divPatients);
-                //   const newSate = actualState.filter(speciality=> speciality.specialityId !== newPatient.fkSpecialityId);
-                //   newSate.push(speciality)
-                //   actualState = newSate
+                displayPatient(newPatient, divPatients);
             }
         }
     );
@@ -144,27 +141,27 @@ function openEditSpecModal(speciality: specialityI) {
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton') as HTMLButtonElement;
     sendSpecialityButton.addEventListener('click', () => editSpeciality(speciality, nameInput, physicianInput));
     const closeSpecialityForm = document.querySelector('#closeSpecialityForm') as HTMLButtonElement;
-    closeSpecialityForm.addEventListener('click', ()=>closeModal(modal))
+    closeSpecialityForm.addEventListener('click', () => closeModal(modal))
 
 }
 
 function editSpeciality(speciality: specialityI, nameInput: HTMLInputElement, physicianInput: HTMLInputElement) {
 
     let exist: boolean = false
-    specialityState.forEach(speciality =>{
-        if(nameInput.value === speciality.name){
+    specialityState.forEach( state => {
+        if (nameInput.value === state.name && state.specialityId != speciality.specialityId) {
             exist = true;
         }
     })
 
-    if(!exist){
+    if (!exist) {
         const editedpeciality: specialityI = {
             specialityId: speciality.specialityId,
             name: nameInput.value,
             physicianInCharge: physicianInput.value,
             patients: speciality.patients
         }
-    
+
         putSpeciality(editedpeciality).then(response => {
             if (response.status === 200) {
                 const h2Title = document.querySelector(`.single-speciality-title-${speciality.specialityId}`) as HTMLHeadingElement
@@ -174,15 +171,14 @@ function editSpeciality(speciality: specialityI, nameInput: HTMLInputElement, ph
                 nameInput.value = '';
                 physicianInput.value = '';
                 modal.innerHTML = "";
-               //const newState = specialityState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
-                //actualState = newState;
+
             }
         }
         );
 
-    }else{alert("Speciality alredy exist")}
-    
-    
+    } else { alert("Speciality alredy exist") }
+
+
 }
 
 function handleEditPatient(patient: patientI) {
@@ -210,16 +206,16 @@ function handleEditPatient(patient: patientI) {
     const sendPatientButton = document.querySelector('#sendPatientButton') as HTMLButtonElement;
     const closePatientButton = document.querySelector('#closPatientForm') as HTMLButtonElement;
 
-    closePatientButton.addEventListener('click', ()=>
+    closePatientButton.addEventListener('click', () =>
         closeModal(div)
     );
     sendPatientButton.addEventListener('click', () =>
-        editPatient(patient, dateInput,div));
+        editPatient(patient, dateInput, div));
 
 }
 
-function closeModal(div: HTMLDivElement){
-    div.innerHTML = div.innerHTML = ""; 
+function closeModal(div: HTMLDivElement) {
+    div.innerHTML = div.innerHTML = "";
 }
 
 function editPatient(patient: patientI, dateInput: HTMLInputElement, div: HTMLDivElement) {
@@ -235,8 +231,8 @@ function editPatient(patient: patientI, dateInput: HTMLInputElement, div: HTMLDi
     patchPatient(editedPatien).then(response => {
         if (response.status === 200) {
             const datesLi = document.querySelector(`#dates-patient-${editedPatien.dni}`) as HTMLLIElement
-            datesLi.innerText = "Dates: "+ patient.datesOfAppointments+"-"+ editedPatien.datesOfAppointments;  
-            div.innerHTML = "";          
+            datesLi.innerText = "Dates: " + patient.datesOfAppointments + "-" + editedPatien.datesOfAppointments;
+            div.innerHTML = "";
         }
     });
 }
@@ -249,20 +245,20 @@ function handleDeletePatient(patient: patientI) {
             console.log("removed!")
             const patientDiv = document.querySelector(`#content-${patient.dni}`) as HTMLDivElement
             patientDiv.remove();
-            
+
         }
     }
     )
 }
 
-function handleDeleteSpeciality(speciality: specialityI){
+function handleDeleteSpeciality(speciality: specialityI) {
 
-    deleteSpeciality(speciality).then(responsponse =>{
-        if(responsponse.status ===200){
+    deleteSpeciality(speciality).then(responsponse => {
+        if (responsponse.status === 200) {
             const specialityDiv = document.querySelector(`#speciality-${speciality.specialityId}`) as HTMLDivElement
             specialityDiv.remove();
         }
-        if(responsponse.status ===400){
+        if (responsponse.status === 400) {
             alert("Cannot delete a speciality with patients")
         }
     }

@@ -1,8 +1,8 @@
-export interface specialityI{
-    specialityId: number, //|null,
+export interface specialityI {
+    specialityId: number,
     name: string,
     physicianInCharge: string,
-    patients: Patient[] //|null
+    patients: Patient[]
 }
 
 export type Patient = {
@@ -11,9 +11,9 @@ export type Patient = {
     dni: number,
     datesOfAppointments: string,
     fkSpecialityId: number
-} 
+}
 
-export interface patientI{
+export interface patientI {
     name: string,
     age: number,
     dni: number,

@@ -24,7 +24,7 @@ function sendSpeciality() {
             specialityId: 0,
             name: nameInput.value,
             physicianInCharge: physicianInput.value,
-            patients: [] //null
+            patients: []
         };
         console.log(newSpeciality);
         postSpeciality(newSpeciality).then(response => {
@@ -87,9 +87,6 @@ function sendPatient(speciality, div) {
             console.log("sended!");
             const divPatients = document.querySelector(`#patients-${speciality.specialityId}`);
             displayPatient(newPatient, divPatients);
-            //   const newSate = actualState.filter(speciality=> speciality.specialityId !== newPatient.fkSpecialityId);
-            //   newSate.push(speciality)
-            //   actualState = newSate
         }
     });
 }
@@ -113,8 +110,8 @@ function openEditSpecModal(speciality) {
 }
 function editSpeciality(speciality, nameInput, physicianInput) {
     let exist = false;
-    specialityState.forEach(speciality => {
-        if (nameInput.value === speciality.name) {
+    specialityState.forEach(state => {
+        if (nameInput.value === state.name && state.specialityId != speciality.specialityId) {
             exist = true;
         }
     });
@@ -134,8 +131,6 @@ function editSpeciality(speciality, nameInput, physicianInput) {
                 nameInput.value = '';
                 physicianInput.value = '';
                 modal.innerHTML = "";
-                //const newState = specialityState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
-                //actualState = newState;
             }
         });
     }
