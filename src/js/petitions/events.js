@@ -2,6 +2,7 @@ import { display } from "../elements.js";
 import { deletePatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
 import { specialityState } from "../index.js";
 const modal = document.querySelector('#form-new-speciality');
+let actualState = specialityState;
 function openModal() {
     modal.innerHTML = formModelSpeciality;
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton');
@@ -20,7 +21,7 @@ function sendSpeciality() {
         console.log(newSpeciality);
         postSpeciality(newSpeciality).then(response => {
             if (response.status === 201) {
-                specialityState.push(newSpeciality);
+                actualState.push(newSpeciality);
                 display(newSpeciality);
                 nameInput.value = '';
                 physicianInput.value = '';
@@ -73,6 +74,9 @@ function sendPatient(speciality, div) {
             (_a = speciality.patients) === null || _a === void 0 ? void 0 : _a.push(newPatient);
             div.innerHTML = "";
             console.log("sended!");
+            const newSate = actualState.filter(speciality => speciality.specialityId !== newPatient.fkSpecialityId);
+            newSate.push(speciality);
+            actualState = newSate;
         }
     });
 }
@@ -104,6 +108,8 @@ function editSpeciality(speciality, nameInput, physicianInput) {
             nameInput.value = '';
             physicianInput.value = '';
             modal.innerHTML = "";
+            const newSate = actualState.map(speciality => speciality.specialityId === editedpeciality.specialityId ? editedpeciality : speciality);
+            actualState = newSate;
         }
     });
 }

@@ -5,6 +5,8 @@ import { specialityState} from "../index.js"
 
 const modal = document.querySelector('#form-new-speciality') as HTMLDivElement;
 
+let actualState: specialityI[] = specialityState;
+
 function openModal(){
 
     modal.innerHTML = formModelSpeciality;
@@ -29,7 +31,7 @@ function sendSpeciality(){
         postSpeciality(newSpeciality).then(
             response => {
               if(response.status === 201){
-                specialityState.push(newSpeciality)      
+                actualState.push(newSpeciality)      
                 display(newSpeciality);  
                 nameInput.value = '';
                 physicianInput.value = '';
@@ -91,6 +93,9 @@ function sendPatient(speciality: specialityI, div:HTMLDivElement){
             speciality.patients?.push(newPatient);
             div.innerHTML = "";
             console.log("sended!")
+            const newSate = actualState.filter(speciality=> speciality.specialityId !== newPatient.fkSpecialityId);
+            newSate.push(speciality)
+            actualState = newSate
           }
         }
       );
@@ -131,8 +136,9 @@ function editSpeciality(speciality:specialityI, nameInput:HTMLInputElement, phys
             h3Physician.innerText = "Physician in Charge: Dr. "+ editedpeciality.physicianInCharge;
             nameInput.value = '';
             physicianInput.value = '';
-            modal.innerHTML = "";       
-
+            modal.innerHTML = "";
+            const newSate:specialityI[] = actualState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
+            actualState = newSate;
         }
     }
     );
@@ -145,11 +151,10 @@ function handleDeletePatient(patient: patientI){
         if(response.status === 200){
             console.log("removed!")
             const patientDiv = document.querySelector(`#content-${patient.dni}`) as HTMLDivElement
-            patientDiv.remove();
+            patientDiv.remove();            
         }
     }
     )
-    
 }
 
 const formModelSpeciality: string = `
