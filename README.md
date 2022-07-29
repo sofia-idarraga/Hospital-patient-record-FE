@@ -34,8 +34,8 @@ npm install
 ![Create](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/c9e9869da5644136a71414c2030af4939795d9c8/screenshots/ss2.PNG)
 
 - Edit, delete and add new patients to the medical specialities created
-![Speciality](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/c9e9869da5644136a71414c2030af4939795d9c8/screenshots/ss3.PNG)
+![Speciality](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/5e17b9acb12569522d906d4e00529c5d84c1da99/screenshots/ss3.png)
 
 - Create new patients to each speciality. Also delete and add new date to patients created
-![Patient](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/c9e9869da5644136a71414c2030af4939795d9c8/screenshots/ss4.PNG)
+![Patient](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/5e17b9acb12569522d906d4e00529c5d84c1da99/screenshots/ss4.png)
 
