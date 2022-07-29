@@ -39,6 +39,18 @@ export function postPatient(patient) {
         return response;
     });
 }
+export function deletePatient(patient) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(baseUrl + '/delete/patient', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(patient)
+        });
+        return response;
+    });
+}
 export function putSpeciality(speciality) {
     return __awaiter(this, void 0, void 0, function* () {
         const response = yield fetch(baseUrl + '/update/speciality', {

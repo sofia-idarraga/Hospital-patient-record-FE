@@ -1,4 +1,4 @@
-import { Patient, specialityI } from "../interfaces/interfaces.js";
+import { Patient, patientI, specialityI } from "../interfaces/interfaces.js";
 
 const baseUrl = "http://localhost:8080/api";
 
@@ -24,10 +24,23 @@ export async function postSpeciality(speciality:specialityI){
     return response;
   }
 
-  export async function postPatient(patient:Patient){
+  export async function postPatient(patient:patientI){
     const response:Response = await fetch(baseUrl+'/create/patient', 
     {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(patient)
+    })
+  
+    return response;
+  }
+
+  export async function deletePatient(patient:patientI){
+    const response:Response = await fetch(baseUrl+'/delete/patient', 
+    {
+      method: 'DELETE',
       headers: {
         'Content-Type': 'application/json' 
       },

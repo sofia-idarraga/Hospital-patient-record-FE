@@ -1,10 +1,9 @@
-import { openEditSpecModal, openPatientModal } from "./petitions/events.js";
+import { openEditSpecModal, openPatientModal, handleDeletePatient } from "./petitions/events.js";
 const specialityContainer = document.querySelector('#specialityContainer');
 function displaySpecialities(specialities) {
     specialities.forEach(speciality => display(speciality));
 }
 function display(speciality) {
-    var _a;
     specialityContainer;
     const div = document.createElement('div');
     div.className = "single-speciality-container rounded-lg text-center overflow-hidden w-full" +
@@ -38,12 +37,10 @@ function display(speciality) {
     createPatientButton.addEventListener('click', () => openPatientModal(speciality));
     editButton.innerText = "Edit";
     createPatientButton.innerText = "New Patient";
-    if (((_a = speciality.patients) === null || _a === void 0 ? void 0 : _a.length) == 0) {
-        const deleteButton = document.createElement('button');
-        deleteButton.innerText = "Delete";
-        deleteButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
-        divButtons.append(deleteButton);
-    }
+    const deleteButton = document.createElement('button');
+    deleteButton.innerText = "Delete";
+    deleteButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
+    divButtons.append(deleteButton);
     divButtons.append(editButton, createPatientButton);
     div.append(divButtons);
     specialityContainer.append(div);
@@ -73,6 +70,7 @@ function displayPatient(patient, divSpeciality) {
     divButtons.className = "flex place-items-center text-center mx-auto";
     const deleteButton = document.createElement('button');
     const editButton = document.createElement('button');
+    deleteButton.addEventListener('click', () => handleDeletePatient(patient));
     editButton.className = " block p-2.5 bg-gray-900 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300 text-white";
     editButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
     <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />

@@ -1,5 +1,5 @@
-import { display, displayPatient } from "../elements.js";
-import { postPatient, postSpeciality, putSpeciality } from "./petitions.js";
+import { display } from "../elements.js";
+import { deletePatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
 import { specialityState } from "../index.js";
 const modal = document.querySelector('#form-new-speciality');
 function openModal() {
@@ -54,7 +54,7 @@ function sendPatient(speciality, div) {
         age: parseInt(ageInput.value),
         dni: parseInt(dniIntpu.value),
         datesOfAppointments: dateInput.value,
-        specialityId: id
+        fkSpecialityId: id
     };
     console.log(newPatient);
     let exist = false;
@@ -71,14 +71,13 @@ function sendPatient(speciality, div) {
         var _a;
         if (response.status === 201) {
             (_a = speciality.patients) === null || _a === void 0 ? void 0 : _a.push(newPatient);
-            const divSpeciality = document.querySelector(`#speciality-${speciality.specialityId}`);
-            displayPatient(newPatient, divSpeciality);
             div.innerHTML = "";
             console.log("sended!");
         }
     });
 }
 function openEditSpecModal(speciality) {
+    window.scrollTo(0, 0);
     modal.innerHTML = formModelSpeciality;
     const nameInput = document.querySelector('#specialityName');
     const physicianInput = document.querySelector('#physician');
@@ -108,6 +107,16 @@ function editSpeciality(speciality, nameInput, physicianInput) {
         }
     });
 }
+function handleDeletePatient(patient) {
+    console.log(patient);
+    deletePatient(patient).then(response => {
+        if (response.status === 200) {
+            console.log("removed!");
+            const patientDiv = document.querySelector(`#content-${patient.dni}`);
+            patientDiv.remove();
+        }
+    });
+}
 const formModelSpeciality = `
 <h3 id="title-form-speciality" class="pt-4 text-2xl text-center">Create new Medical Speciality</h3>
 <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
@@ -118,7 +127,7 @@ const formModelSpeciality = `
             </label>
             <input
                 class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                id="specialityName" type="text" placeholder="Name" required/>
+                id="specialityName" type="text" placeholder="Name" autocomplete="off" required/>
         </div>
         <div class="md:ml-2">
             <label class="block mb-2 text-sm font-bold text-gray-700" for="physician">
@@ -126,7 +135,7 @@ const formModelSpeciality = `
             </label>
             <input
                 class="w-full px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                id="physician" type="text" placeholder="Phisician in charge" required/>
+                id="physician" type="text" placeholder="Phisician in charge" autocomplete="off" required/>
         </div>
         <button id="sendSpecialityButton"
             class=" block p-2.5 bg-gray-900 rounded-xl hover:rounded-3xl hover:bg-green-600 transition-all duration-300 text-white">
@@ -148,7 +157,7 @@ const formModelPatient = `
                 </label>
                 <input
                     class=" px-3 py-2 text-sm leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-                    id="patientName" type="text" placeholder="Name" required/>
+                    id="patientName" type="text" placeholder="Name" autocomplete="off" required/>
             </div>
             <div class="md:ml-2">
                 <label class="block mb-2 text-sm font-bold text-gray-700" for="age">
@@ -185,4 +194,4 @@ const formModelPatient = `
     </form>
 
 `;
-export { openModal, openPatientModal, openEditSpecModal };
+export { openModal, openPatientModal, openEditSpecModal, handleDeletePatient };

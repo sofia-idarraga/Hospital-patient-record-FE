@@ -1,5 +1,5 @@
 import { Patient, specialityI } from "./interfaces/interfaces.js";
-import { openEditSpecModal, openPatientModal } from "./petitions/events.js";
+import { openEditSpecModal, openPatientModal, handleDeletePatient } from "./petitions/events.js";
 
 const specialityContainer = document.querySelector('#specialityContainer') as HTMLDivElement;
 
@@ -27,6 +27,7 @@ function display(speciality:specialityI){
     h3.innerText = "Physician in Charge: Dr. "+ speciality.physicianInCharge;  
     divTitle.append(h2,h3);
     div.append(divTitle);
+    
     if(speciality.patients!=null){
     speciality.patients.forEach(patient => displayPatient(patient, div));
     }
@@ -48,12 +49,10 @@ function display(speciality:specialityI){
     
     editButton.innerText = "Edit";
     createPatientButton.innerText = "New Patient";
-    if(speciality.patients?.length == 0){
-        const deleteButton:HTMLButtonElement = document.createElement('button');
-        deleteButton.innerText="Delete";
-        deleteButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
-        divButtons.append(deleteButton);
-    }
+    const deleteButton:HTMLButtonElement = document.createElement('button');
+    deleteButton.innerText="Delete";
+    deleteButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
+    divButtons.append(deleteButton);
     divButtons.append(editButton, createPatientButton);
 
     div.append(divButtons);
@@ -92,6 +91,8 @@ function displayPatient(patient:Patient, divSpeciality: HTMLDivElement){
     divButtons.className = "flex place-items-center text-center mx-auto";
     const deleteButton:HTMLButtonElement = document.createElement('button');
     const editButton:HTMLButtonElement = document.createElement('button');
+
+    deleteButton.addEventListener('click', () => handleDeletePatient(patient));
     
     editButton.className = " block p-2.5 bg-gray-900 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300 text-white";
     editButton.innerHTML =`<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

@@ -10,5 +10,13 @@ export type Patient = {
     age: number,
     dni: number,
     datesOfAppointments: string,
-    specialityId: number
+    fkSpecialityId: number
+} 
+
+export interface patientI{
+    name: string,
+    age: number,
+    dni: number,
+    datesOfAppointments: string,
+    fkSpecialityId: number
 } 
