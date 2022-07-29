@@ -1,4 +1,4 @@
-const formModelSpeciality: string = `
+const formModelSpeciality = `
 <h3 id="title-form-speciality" class="pt-4 text-2xl text-center">Create new Medical Speciality</h3>
 <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
     <div class="mb-4 md:flex md:justify-between w-full mt-10 p-6">
@@ -36,9 +36,8 @@ const formModelSpeciality: string = `
         </div>
     </div>
 </form>
-`
-
-const formModelPatient: string = `
+`;
+const formModelPatient = `
 <h3 class="pt-4 text-2xl text-center">Agend new patient</h3>
     
     <form class="px-8 pt-6 pb-8 mb-4 bg-white rounded">
@@ -94,9 +93,5 @@ const formModelPatient: string = `
         </div>
     </form>
 
-`
-
-export{
-    formModelSpeciality,
-    formModelPatient
-}
+`;
+export { formModelSpeciality, formModelPatient };

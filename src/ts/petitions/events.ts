@@ -14,6 +14,9 @@ function openModal() {
 
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton') as HTMLButtonElement;
     sendSpecialityButton.addEventListener('click', () => sendSpeciality());
+    const closeSpecialityForm = document.querySelector('#closeSpecialityForm') as HTMLButtonElement;
+    closeSpecialityForm.addEventListener('click', ()=>closeModal(modal))
+
 }
 
 function sendSpeciality() {
@@ -56,6 +59,11 @@ function openPatientModal(speciality: specialityI) {
     div.scrollIntoView({ behavior: 'smooth' });
 
     const sendPatientButton = document.querySelector('#sendPatientButton') as HTMLButtonElement;
+    const closePatientButton = document.querySelector('#closPatientForm') as HTMLButtonElement;
+
+    closePatientButton.addEventListener('click', ()=>
+        closeModal(div)
+    );
 
     sendPatientButton.addEventListener('click', () => sendPatient(speciality, div));
 
@@ -127,6 +135,8 @@ function openEditSpecModal(speciality: specialityI) {
 
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton') as HTMLButtonElement;
     sendSpecialityButton.addEventListener('click', () => editSpeciality(speciality, nameInput, physicianInput));
+    const closeSpecialityForm = document.querySelector('#closeSpecialityForm') as HTMLButtonElement;
+    closeSpecialityForm.addEventListener('click', ()=>closeModal(modal))
 
 }
 
@@ -178,10 +188,18 @@ function handleEditPatient(patient: patientI) {
     dniIntpu.disabled = true;
 
     const sendPatientButton = document.querySelector('#sendPatientButton') as HTMLButtonElement;
+    const closePatientButton = document.querySelector('#closPatientForm') as HTMLButtonElement;
 
+    closePatientButton.addEventListener('click', ()=>
+        closeModal(div)
+    );
     sendPatientButton.addEventListener('click', () =>
         editPatient(patient, dateInput,div));
 
+}
+
+function closeModal(div: HTMLDivElement){
+    div.innerHTML = div.innerHTML = ""; 
 }
 
 function editPatient(patient: patientI, dateInput: HTMLInputElement, div: HTMLDivElement) {
@@ -231,6 +249,7 @@ function handleDeleteSpeciality(speciality: specialityI){
 
     )
 }
+
 
 
 
