@@ -1,4 +1,5 @@
-import { Patient, specialityI } from "./interfaces/interfaces";
+import { Patient, specialityI } from "./interfaces/interfaces.js";
+import { openEditSpecModal, openPatientModal } from "./petitions/events.js";
 
 const specialityContainer = document.querySelector('#specialityContainer') as HTMLDivElement;
 
@@ -18,7 +19,7 @@ function display(speciality:specialityI){
     divTitle.id="title";
     
     const h2:HTMLHeadElement = document.createElement('h2');
-    h2.className = `single-note-title-${speciality.specialityId} font-bold text-3xl text-black`;
+    h2.className = `single-speciality-title-${speciality.specialityId} font-bold text-3xl text-black`;
     h2.innerText = speciality.name;
 
     const h3:HTMLHeadElement = document.createElement('h3');
@@ -29,6 +30,8 @@ function display(speciality:specialityI){
     if(speciality.patients!=null){
     speciality.patients.forEach(patient => displayPatient(patient, div));
     }
+    let id:number = 0;
+    
 
     const divButtons:HTMLDivElement = document.createElement('div');
     divButtons.id = "buttons";
@@ -39,6 +42,10 @@ function display(speciality:specialityI){
     editButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
     createPatientButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
     createPatientButton.id = `create-${speciality.specialityId}`
+    
+    editButton.addEventListener('click', () => openEditSpecModal(speciality));
+    createPatientButton.addEventListener('click', () => openPatientModal(speciality));
+    
     editButton.innerText = "Edit";
     createPatientButton.innerText = "New Patient";
     if(speciality.patients?.length == 0){
@@ -103,5 +110,6 @@ function displayPatient(patient:Patient, divSpeciality: HTMLDivElement){
 export{
     specialityContainer,
     displaySpecialities,
-    display
+    display,
+    displayPatient
 }

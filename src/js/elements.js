@@ -1,3 +1,4 @@
+import { openEditSpecModal, openPatientModal } from "./petitions/events.js";
 const specialityContainer = document.querySelector('#specialityContainer');
 function displaySpecialities(specialities) {
     specialities.forEach(speciality => display(speciality));
@@ -13,7 +14,7 @@ function display(speciality) {
     divTitle.className = "w-full py-5 border-b border-gray-800";
     divTitle.id = "title";
     const h2 = document.createElement('h2');
-    h2.className = `single-note-title-${speciality.specialityId} font-bold text-3xl text-black`;
+    h2.className = `single-speciality-title-${speciality.specialityId} font-bold text-3xl text-black`;
     h2.innerText = speciality.name;
     const h3 = document.createElement('h3');
     h3.className = `physician-in-charge-${speciality.specialityId} font-normal text-indigo-500 text-xl mt-2`;
@@ -23,6 +24,7 @@ function display(speciality) {
     if (speciality.patients != null) {
         speciality.patients.forEach(patient => displayPatient(patient, div));
     }
+    let id = 0;
     const divButtons = document.createElement('div');
     divButtons.id = "buttons";
     divButtons.className = "w-full mt-10 p-6";
@@ -32,6 +34,8 @@ function display(speciality) {
     editButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
     createPatientButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
     createPatientButton.id = `create-${speciality.specialityId}`;
+    editButton.addEventListener('click', () => openEditSpecModal(speciality));
+    createPatientButton.addEventListener('click', () => openPatientModal(speciality));
     editButton.innerText = "Edit";
     createPatientButton.innerText = "New Patient";
     if (((_a = speciality.patients) === null || _a === void 0 ? void 0 : _a.length) == 0) {
@@ -81,4 +85,4 @@ function displayPatient(patient, divSpeciality) {
     div.append(divButtons);
     divSpeciality.append(div);
 }
-export { specialityContainer, displaySpecialities, display };
+export { specialityContainer, displaySpecialities, display, displayPatient };

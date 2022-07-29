@@ -27,3 +27,27 @@ export function postSpeciality(speciality) {
         return response;
     });
 }
+export function postPatient(patient) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(baseUrl + '/create/patient', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(patient)
+        });
+        return response;
+    });
+}
+export function putSpeciality(speciality) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(baseUrl + '/update/speciality', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(speciality)
+        });
+        return response;
+    });
+}
