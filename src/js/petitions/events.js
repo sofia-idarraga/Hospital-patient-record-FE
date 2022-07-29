@@ -1,8 +1,8 @@
 import { display, displayPatient } from "../elements.js";
 import { deletePatient, deleteSpeciality, patchPatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
+import { specialityState } from "../index.js";
 import { formModelPatient, formModelSpeciality } from "../formatHtml.js";
 const modal = document.querySelector('#form-new-speciality');
-//let actualState: specialityI[] = specialityState;
 function openModal() {
     modal.innerHTML = formModelSpeciality;
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton');
@@ -13,6 +13,12 @@ function openModal() {
 function sendSpeciality() {
     const nameInput = document.querySelector('#specialityName');
     const physicianInput = document.querySelector('#physician');
+    specialityState.forEach(speciality => {
+        if (nameInput.value === speciality.name) {
+            alert("Speciality alredy exist");
+            return;
+        }
+    });
     if (nameInput.value && physicianInput.value) {
         const newSpeciality = {
             specialityId: 0,
@@ -23,7 +29,7 @@ function sendSpeciality() {
         console.log(newSpeciality);
         postSpeciality(newSpeciality).then(response => {
             if (response.status === 201) {
-                //  actualState.push(newSpeciality)      
+                specialityState.push(newSpeciality);
                 display(newSpeciality);
                 nameInput.value = '';
                 physicianInput.value = '';
@@ -106,25 +112,36 @@ function openEditSpecModal(speciality) {
     closeSpecialityForm.addEventListener('click', () => closeModal(modal));
 }
 function editSpeciality(speciality, nameInput, physicianInput) {
-    const editedpeciality = {
-        specialityId: speciality.specialityId,
-        name: nameInput.value,
-        physicianInCharge: physicianInput.value,
-        patients: speciality.patients
-    };
-    putSpeciality(editedpeciality).then(response => {
-        if (response.status === 200) {
-            const h2Title = document.querySelector(`.single-speciality-title-${speciality.specialityId}`);
-            h2Title.innerText = editedpeciality.name;
-            const h3Physician = document.querySelector(`.physician-in-charge-${speciality.specialityId}`);
-            h3Physician.innerText = "Physician in Charge: Dr. " + editedpeciality.physicianInCharge;
-            nameInput.value = '';
-            physicianInput.value = '';
-            modal.innerHTML = "";
-            //   const newSate:specialityI[] = actualState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
-            //   actualState = newSate;
+    let exist = false;
+    specialityState.forEach(speciality => {
+        if (nameInput.value === speciality.name) {
+            exist = true;
         }
     });
+    if (!exist) {
+        const editedpeciality = {
+            specialityId: speciality.specialityId,
+            name: nameInput.value,
+            physicianInCharge: physicianInput.value,
+            patients: speciality.patients
+        };
+        putSpeciality(editedpeciality).then(response => {
+            if (response.status === 200) {
+                const h2Title = document.querySelector(`.single-speciality-title-${speciality.specialityId}`);
+                h2Title.innerText = editedpeciality.name;
+                const h3Physician = document.querySelector(`.physician-in-charge-${speciality.specialityId}`);
+                h3Physician.innerText = "Physician in Charge: Dr. " + editedpeciality.physicianInCharge;
+                nameInput.value = '';
+                physicianInput.value = '';
+                modal.innerHTML = "";
+                //const newState = specialityState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
+                //actualState = newState;
+            }
+        });
+    }
+    else {
+        alert("Speciality alredy exist");
+    }
 }
 function handleEditPatient(patient) {
     const divSpeciality = document.querySelector(`#speciality-${patient.fkSpecialityId}`);

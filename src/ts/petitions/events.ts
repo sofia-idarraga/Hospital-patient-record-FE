@@ -1,12 +1,13 @@
 import { display, displayPatient, displaySpecialities } from "../elements.js";
 import { Patient, patientI, specialityI } from "../interfaces/interfaces.js";
 import { deletePatient, deleteSpeciality, getAllSpecialities, patchPatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
-import { specialityState } from "../index.js"
+import  {specialityState  } from "../index.js"
 import { formModelPatient, formModelSpeciality } from "../formatHtml.js";
+
 
 const modal = document.querySelector('#form-new-speciality') as HTMLDivElement;
 
-//let actualState: specialityI[] = specialityState;
+
 
 function openModal() {
 
@@ -23,6 +24,13 @@ function sendSpeciality() {
 
     const nameInput = document.querySelector('#specialityName') as HTMLInputElement;
     const physicianInput = document.querySelector('#physician') as HTMLInputElement;
+    specialityState.forEach(speciality =>{
+        if(nameInput.value === speciality.name){
+            alert("Speciality alredy exist");
+            return;
+        }
+    })
+    
     if (nameInput.value && physicianInput.value) {
         const newSpeciality: specialityI = {
             specialityId: 0,//null,
@@ -35,7 +43,7 @@ function sendSpeciality() {
         postSpeciality(newSpeciality).then(
             response => {
                 if (response.status === 201) {
-                    //  actualState.push(newSpeciality)      
+                    specialityState.push(newSpeciality)      
                     display(newSpeciality);
                     nameInput.value = '';
                     physicianInput.value = '';
@@ -142,27 +150,39 @@ function openEditSpecModal(speciality: specialityI) {
 
 function editSpeciality(speciality: specialityI, nameInput: HTMLInputElement, physicianInput: HTMLInputElement) {
 
-    const editedpeciality: specialityI = {
-        specialityId: speciality.specialityId,
-        name: nameInput.value,
-        physicianInCharge: physicianInput.value,
-        patients: speciality.patients
-    }
-
-    putSpeciality(editedpeciality).then(response => {
-        if (response.status === 200) {
-            const h2Title = document.querySelector(`.single-speciality-title-${speciality.specialityId}`) as HTMLHeadingElement
-            h2Title.innerText = editedpeciality.name;
-            const h3Physician = document.querySelector(`.physician-in-charge-${speciality.specialityId}`) as HTMLHeadingElement
-            h3Physician.innerText = "Physician in Charge: Dr. " + editedpeciality.physicianInCharge;
-            nameInput.value = '';
-            physicianInput.value = '';
-            modal.innerHTML = "";
-            //   const newSate:specialityI[] = actualState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
-            //   actualState = newSate;
+    let exist: boolean = false
+    specialityState.forEach(speciality =>{
+        if(nameInput.value === speciality.name){
+            exist = true;
         }
-    }
-    );
+    })
+
+    if(!exist){
+        const editedpeciality: specialityI = {
+            specialityId: speciality.specialityId,
+            name: nameInput.value,
+            physicianInCharge: physicianInput.value,
+            patients: speciality.patients
+        }
+    
+        putSpeciality(editedpeciality).then(response => {
+            if (response.status === 200) {
+                const h2Title = document.querySelector(`.single-speciality-title-${speciality.specialityId}`) as HTMLHeadingElement
+                h2Title.innerText = editedpeciality.name;
+                const h3Physician = document.querySelector(`.physician-in-charge-${speciality.specialityId}`) as HTMLHeadingElement
+                h3Physician.innerText = "Physician in Charge: Dr. " + editedpeciality.physicianInCharge;
+                nameInput.value = '';
+                physicianInput.value = '';
+                modal.innerHTML = "";
+               //const newState = specialityState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
+                //actualState = newState;
+            }
+        }
+        );
+
+    }else{alert("Speciality alredy exist")}
+    
+    
 }
 
 function handleEditPatient(patient: patientI) {
@@ -249,9 +269,6 @@ function handleDeleteSpeciality(speciality: specialityI){
 
     )
 }
-
-
-
 
 
 export {
