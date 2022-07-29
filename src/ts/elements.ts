@@ -16,7 +16,7 @@ function display(speciality:specialityI){
     
     const divTitle:HTMLDivElement = document.createElement('div');
     divTitle.className = "w-full py-5 border-b border-gray-800";
-    divTitle.id="title";
+    divTitle.id=`title-${speciality.specialityId}`;
     
     const h2:HTMLHeadElement = document.createElement('h2');
     h2.className = `single-speciality-title-${speciality.specialityId} font-bold text-3xl text-black`;
@@ -27,11 +27,15 @@ function display(speciality:specialityI){
     h3.innerText = "Physician in Charge: Dr. "+ speciality.physicianInCharge;  
     divTitle.append(h2,h3);
     div.append(divTitle);
+
+    const divPatients:HTMLDivElement = document.createElement('div');
+    divPatients.id=`patients-${speciality.specialityId}`;
+    div.append(divPatients);
     
-    if(speciality.patients!=null){
-    speciality.patients.forEach(patient => displayPatient(patient, div));
-    }
-    let id:number = 0;
+    
+    speciality.patients.forEach(patient => displayPatient(patient, divPatients));
+    
+    
     
 
     const divButtons:HTMLDivElement = document.createElement('div');

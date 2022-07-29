@@ -1,4 +1,4 @@
-import { display, displaySpecialities } from "../elements.js";
+import { display, displayPatient, displaySpecialities } from "../elements.js";
 import { Patient, patientI, specialityI } from "../interfaces/interfaces.js";
 import { deletePatient, deleteSpeciality, getAllSpecialities, patchPatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
 import { specialityState } from "../index.js"
@@ -22,10 +22,10 @@ function sendSpeciality() {
     const physicianInput = document.querySelector('#physician') as HTMLInputElement;
     if (nameInput.value && physicianInput.value) {
         const newSpeciality: specialityI = {
-            specialityId: null,
+            specialityId: 0,//null,
             name: nameInput.value,
             physicianInCharge: physicianInput.value,
-            patients: null
+            patients: []//null
         }
         console.log(newSpeciality);
 
@@ -96,6 +96,8 @@ function sendPatient(speciality: specialityI, div: HTMLDivElement) {
                 speciality.patients?.push(newPatient);
                 div.innerHTML = "";
                 console.log("sended!")
+                const divPatients = document.querySelector(`#patients-${speciality.specialityId}`) as HTMLDivElement;
+                displayPatient(newPatient,divPatients);
                 //   const newSate = actualState.filter(speciality=> speciality.specialityId !== newPatient.fkSpecialityId);
                 //   newSate.push(speciality)
                 //   actualState = newSate
