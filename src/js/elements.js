@@ -1,4 +1,4 @@
-import { openEditSpecModal, openPatientModal, handleDeletePatient, handleEditPatient } from "./petitions/events.js";
+import { openEditSpecModal, openPatientModal, handleDeletePatient, handleEditPatient, handleDeleteSpeciality } from "./petitions/events.js";
 const specialityContainer = document.querySelector('#specialityContainer');
 function displaySpecialities(specialities) {
     specialities.forEach(speciality => display(speciality));
@@ -40,6 +40,7 @@ function display(speciality) {
     const deleteButton = document.createElement('button');
     deleteButton.innerText = "Delete";
     deleteButton.className = "w-full block bg-gray-900 font-medium text-xl p-4 rounded-xl hover:shadow-lg transition duration-200 ease-in-out hover:bg-indigo-600 hover:text-black";
+    deleteButton.addEventListener('click', () => handleDeleteSpeciality(speciality));
     divButtons.append(deleteButton);
     divButtons.append(editButton, createPatientButton);
     div.append(divButtons);
@@ -60,6 +61,7 @@ function displayPatient(patient, divSpeciality) {
     const liAge = document.createElement('li');
     const liDni = document.createElement('li');
     const liDates = document.createElement('li');
+    liDates.id = `dates-patient-${patient.dni}`;
     liAge.innerText = "Age: " + patient.age.toString();
     liDni.innerText = "Dni: " + patient.dni.toString();
     liDates.innerText = "Dates: " + patient.datesOfAppointments;

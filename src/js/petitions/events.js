@@ -1,5 +1,5 @@
 import { display } from "../elements.js";
-import { deletePatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
+import { deletePatient, deleteSpeciality, patchPatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
 const modal = document.querySelector('#form-new-speciality');
 //let actualState: specialityI[] = specialityState;
 function openModal() {
@@ -81,7 +81,8 @@ function sendPatient(speciality, div) {
     });
 }
 function openEditSpecModal(speciality) {
-    window.scrollTo({ top: 0,
+    window.scrollTo({
+        top: 0,
         left: 0,
         behavior: 'smooth'
     });
@@ -134,8 +135,23 @@ function handleEditPatient(patient) {
     ageInput.disabled = true;
     dniIntpu.disabled = true;
     const sendPatientButton = document.querySelector('#sendPatientButton');
-    sendPatientButton.addEventListener('click', () => console.log("waiting")
-    /*editPatient(speciality)*/ );
+    sendPatientButton.addEventListener('click', () => editPatient(patient, dateInput, div));
+}
+function editPatient(patient, dateInput, div) {
+    const editedPatien = {
+        name: patient.name,
+        age: patient.age,
+        dni: patient.dni,
+        datesOfAppointments: dateInput.value,
+        fkSpecialityId: patient.fkSpecialityId
+    };
+    patchPatient(editedPatien).then(response => {
+        if (response.status === 200) {
+            const datesLi = document.querySelector(`#dates-patient-${editedPatien.dni}`);
+            datesLi.innerText = patient.datesOfAppointments + "-" + editedPatien.datesOfAppointments;
+            div.innerHTML = "";
+        }
+    });
 }
 function handleDeletePatient(patient) {
     console.log(patient);
@@ -144,6 +160,17 @@ function handleDeletePatient(patient) {
             console.log("removed!");
             const patientDiv = document.querySelector(`#content-${patient.dni}`);
             patientDiv.remove();
+        }
+    });
+}
+function handleDeleteSpeciality(speciality) {
+    deleteSpeciality(speciality).then(responsponse => {
+        if (responsponse.status === 200) {
+            const specialityDiv = document.querySelector(`#speciality-${speciality.specialityId}`);
+            specialityDiv.remove();
+        }
+        if (responsponse.status === 400) {
+            alert("Cannot delete a speciality with patients");
         }
     });
 }
@@ -224,4 +251,4 @@ const formModelPatient = `
     </form>
 
 `;
-export { openModal, openPatientModal, openEditSpecModal, handleDeletePatient, handleEditPatient };
+export { openModal, openPatientModal, openEditSpecModal, handleDeletePatient, handleEditPatient, handleDeleteSpeciality };

@@ -62,3 +62,30 @@ export async function postSpeciality(speciality:specialityI){
   
     return response;
   }
+
+  export async function patchPatient(patient:patientI) {
+    const response:Response = await fetch(baseUrl+'/update/date/patient', 
+    {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(patient)
+    })
+  
+    return response;
+  }
+
+  export async function deleteSpeciality(speciality:specialityI) {
+    const response:Response = await fetch(baseUrl+'/delete/speciality', 
+    {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json' 
+      },
+      body: JSON.stringify(speciality)
+    })
+  
+    return response;
+    
+  }

@@ -63,3 +63,27 @@ export function putSpeciality(speciality) {
         return response;
     });
 }
+export function patchPatient(patient) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(baseUrl + '/update/date/patient', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(patient)
+        });
+        return response;
+    });
+}
+export function deleteSpeciality(speciality) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const response = yield fetch(baseUrl + '/delete/speciality', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(speciality)
+        });
+        return response;
+    });
+}
