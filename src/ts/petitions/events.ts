@@ -5,7 +5,7 @@ import { specialityState} from "../index.js"
 
 const modal = document.querySelector('#form-new-speciality') as HTMLDivElement;
 
-let actualState: specialityI[] = specialityState;
+//let actualState: specialityI[] = specialityState;
 
 function openModal(){
 
@@ -31,7 +31,7 @@ function sendSpeciality(){
         postSpeciality(newSpeciality).then(
             response => {
               if(response.status === 201){
-                actualState.push(newSpeciality)      
+              //  actualState.push(newSpeciality)      
                 display(newSpeciality);  
                 nameInput.value = '';
                 physicianInput.value = '';
@@ -51,6 +51,8 @@ function openPatientModal(speciality: specialityI){
 
     div.innerHTML = formModelPatient;
     divSpeciality?.append(div);
+
+    div.scrollIntoView({behavior: 'smooth'});
 
     const sendPatientButton = document.querySelector('#sendPatientButton') as HTMLButtonElement;
     
@@ -93,16 +95,21 @@ function sendPatient(speciality: specialityI, div:HTMLDivElement){
             speciality.patients?.push(newPatient);
             div.innerHTML = "";
             console.log("sended!")
-            const newSate = actualState.filter(speciality=> speciality.specialityId !== newPatient.fkSpecialityId);
-            newSate.push(speciality)
-            actualState = newSate
+         //   const newSate = actualState.filter(speciality=> speciality.specialityId !== newPatient.fkSpecialityId);
+         //   newSate.push(speciality)
+         //   actualState = newSate
           }
         }
       );
 }
 
 function openEditSpecModal(speciality: specialityI){
-    window.scrollTo(0,0);
+    window.scrollTo(
+        {top:0,
+        left:0,
+        behavior: 'smooth'
+        }
+        );
     modal.innerHTML = formModelSpeciality;
 
     const nameInput = document.querySelector('#specialityName') as HTMLInputElement;
@@ -137,11 +144,41 @@ function editSpeciality(speciality:specialityI, nameInput:HTMLInputElement, phys
             nameInput.value = '';
             physicianInput.value = '';
             modal.innerHTML = "";
-            const newSate:specialityI[] = actualState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
-            actualState = newSate;
+         //   const newSate:specialityI[] = actualState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
+         //   actualState = newSate;
         }
     }
     );
+}
+
+function handleEditPatient(patient: patientI){
+    const divSpeciality = document.querySelector(`#speciality-${patient.fkSpecialityId}`) as HTMLInputElement;
+    const div:HTMLDivElement = document.createElement('div');
+    div.id = "form-create-patient"
+
+    div.innerHTML = formModelPatient;
+    divSpeciality?.append(div);
+
+    div.scrollIntoView({behavior: 'smooth'});
+
+    const nameInput = document.querySelector('#patientName') as HTMLInputElement;
+    const ageInput = document.querySelector('#age') as HTMLInputElement;
+    const dniIntpu = document.querySelector('#dni') as HTMLInputElement;
+    const dateInput = document.querySelector('#date') as HTMLInputElement;
+
+    nameInput.value = patient.name;
+    ageInput.value = patient.age.toString();
+    dniIntpu.value = patient.dni.toString();
+    nameInput.disabled = true;
+    ageInput.disabled = true;
+    dniIntpu.disabled = true;
+
+    const sendPatientButton = document.querySelector('#sendPatientButton') as HTMLButtonElement;
+    
+    sendPatientButton.addEventListener('click', () => 
+    console.log("waiting")
+    /*editPatient(speciality)*/);
+
 }
 
 function handleDeletePatient(patient: patientI){
@@ -240,5 +277,6 @@ const formModelPatient: string = `
 export {openModal,
     openPatientModal,
     openEditSpecModal,
-    handleDeletePatient
+    handleDeletePatient,
+    handleEditPatient
 };

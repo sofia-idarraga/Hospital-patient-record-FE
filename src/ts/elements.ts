@@ -1,5 +1,5 @@
 import { Patient, specialityI } from "./interfaces/interfaces.js";
-import { openEditSpecModal, openPatientModal, handleDeletePatient } from "./petitions/events.js";
+import { openEditSpecModal, openPatientModal, handleDeletePatient, handleEditPatient } from "./petitions/events.js";
 
 const specialityContainer = document.querySelector('#specialityContainer') as HTMLDivElement;
 
@@ -93,6 +93,7 @@ function displayPatient(patient:Patient, divSpeciality: HTMLDivElement){
     const editButton:HTMLButtonElement = document.createElement('button');
 
     deleteButton.addEventListener('click', () => handleDeletePatient(patient));
+    editButton.addEventListener('click', () => handleEditPatient(patient));
     
     editButton.className = " block p-2.5 bg-gray-900 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300 text-white";
     editButton.innerHTML =`<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">

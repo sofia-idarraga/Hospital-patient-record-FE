@@ -1,8 +1,7 @@
 import { display } from "../elements.js";
 import { deletePatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
-import { specialityState } from "../index.js";
 const modal = document.querySelector('#form-new-speciality');
-let actualState = specialityState;
+//let actualState: specialityI[] = specialityState;
 function openModal() {
     modal.innerHTML = formModelSpeciality;
     const sendSpecialityButton = document.querySelector('#sendSpecialityButton');
@@ -21,7 +20,7 @@ function sendSpeciality() {
         console.log(newSpeciality);
         postSpeciality(newSpeciality).then(response => {
             if (response.status === 201) {
-                actualState.push(newSpeciality);
+                //  actualState.push(newSpeciality)      
                 display(newSpeciality);
                 nameInput.value = '';
                 physicianInput.value = '';
@@ -37,6 +36,7 @@ function openPatientModal(speciality) {
     div.id = "form-create-patient";
     div.innerHTML = formModelPatient;
     divSpeciality === null || divSpeciality === void 0 ? void 0 : divSpeciality.append(div);
+    div.scrollIntoView({ behavior: 'smooth' });
     const sendPatientButton = document.querySelector('#sendPatientButton');
     sendPatientButton.addEventListener('click', () => sendPatient(speciality, div));
 }
@@ -74,14 +74,17 @@ function sendPatient(speciality, div) {
             (_a = speciality.patients) === null || _a === void 0 ? void 0 : _a.push(newPatient);
             div.innerHTML = "";
             console.log("sended!");
-            const newSate = actualState.filter(speciality => speciality.specialityId !== newPatient.fkSpecialityId);
-            newSate.push(speciality);
-            actualState = newSate;
+            //   const newSate = actualState.filter(speciality=> speciality.specialityId !== newPatient.fkSpecialityId);
+            //   newSate.push(speciality)
+            //   actualState = newSate
         }
     });
 }
 function openEditSpecModal(speciality) {
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0,
+        left: 0,
+        behavior: 'smooth'
+    });
     modal.innerHTML = formModelSpeciality;
     const nameInput = document.querySelector('#specialityName');
     const physicianInput = document.querySelector('#physician');
@@ -108,10 +111,31 @@ function editSpeciality(speciality, nameInput, physicianInput) {
             nameInput.value = '';
             physicianInput.value = '';
             modal.innerHTML = "";
-            const newSate = actualState.map(speciality => speciality.specialityId === editedpeciality.specialityId ? editedpeciality : speciality);
-            actualState = newSate;
+            //   const newSate:specialityI[] = actualState.map(speciality=> speciality.specialityId === editedpeciality.specialityId?editedpeciality:speciality);
+            //   actualState = newSate;
         }
     });
+}
+function handleEditPatient(patient) {
+    const divSpeciality = document.querySelector(`#speciality-${patient.fkSpecialityId}`);
+    const div = document.createElement('div');
+    div.id = "form-create-patient";
+    div.innerHTML = formModelPatient;
+    divSpeciality === null || divSpeciality === void 0 ? void 0 : divSpeciality.append(div);
+    div.scrollIntoView({ behavior: 'smooth' });
+    const nameInput = document.querySelector('#patientName');
+    const ageInput = document.querySelector('#age');
+    const dniIntpu = document.querySelector('#dni');
+    const dateInput = document.querySelector('#date');
+    nameInput.value = patient.name;
+    ageInput.value = patient.age.toString();
+    dniIntpu.value = patient.dni.toString();
+    nameInput.disabled = true;
+    ageInput.disabled = true;
+    dniIntpu.disabled = true;
+    const sendPatientButton = document.querySelector('#sendPatientButton');
+    sendPatientButton.addEventListener('click', () => console.log("waiting")
+    /*editPatient(speciality)*/ );
 }
 function handleDeletePatient(patient) {
     console.log(patient);
@@ -200,4 +224,4 @@ const formModelPatient = `
     </form>
 
 `;
-export { openModal, openPatientModal, openEditSpecModal, handleDeletePatient };
+export { openModal, openPatientModal, openEditSpecModal, handleDeletePatient, handleEditPatient };
