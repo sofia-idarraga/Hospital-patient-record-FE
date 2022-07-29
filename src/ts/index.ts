@@ -16,9 +16,9 @@ getAllSpecialities().then(specialities => {
 
   newSpecialityButton.addEventListener('click', () => openModal())
 
-  export{
-    specialityState
-  }
+export{
+specialityState
+}
 
 
  

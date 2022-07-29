@@ -148,7 +148,7 @@ function editPatient(patient, dateInput, div) {
     patchPatient(editedPatien).then(response => {
         if (response.status === 200) {
             const datesLi = document.querySelector(`#dates-patient-${editedPatien.dni}`);
-            datesLi.innerText = patient.datesOfAppointments + "-" + editedPatien.datesOfAppointments;
+            datesLi.innerText = "Dates: " + patient.datesOfAppointments + "-" + editedPatien.datesOfAppointments;
             div.innerHTML = "";
         }
     });

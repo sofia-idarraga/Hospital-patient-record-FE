@@ -1,6 +1,6 @@
-import { display } from "../elements.js";
+import { display, displaySpecialities } from "../elements.js";
 import { Patient, patientI, specialityI } from "../interfaces/interfaces.js";
-import { deletePatient, deleteSpeciality, patchPatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
+import { deletePatient, deleteSpeciality, getAllSpecialities, patchPatient, postPatient, postSpeciality, putSpeciality } from "./petitions.js";
 import { specialityState } from "../index.js"
 
 const modal = document.querySelector('#form-new-speciality') as HTMLDivElement;
@@ -194,10 +194,9 @@ function editPatient(patient: patientI, dateInput: HTMLInputElement, div: HTMLDi
     patchPatient(editedPatien).then(response => {
         if (response.status === 200) {
             const datesLi = document.querySelector(`#dates-patient-${editedPatien.dni}`) as HTMLLIElement
-            datesLi.innerText = patient.datesOfAppointments+"-"+ editedPatien.datesOfAppointments;  
+            datesLi.innerText = "Dates: "+ patient.datesOfAppointments+"-"+ editedPatien.datesOfAppointments;  
             div.innerHTML = "";          
         }
-
     });
 }
 
