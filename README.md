@@ -24,3 +24,18 @@ npm install
 
 - Make sure you have alredy start the backend and is running
 - Using Live Server extension start the frontend with _Go Live_
+
+---
+## Views
+- Homepage
+![Homepage](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/c9e9869da5644136a71414c2030af4939795d9c8/screenshots/ss1.PNG)
+
+- Create new medical specialities, remember the name is max 100 char min 5 char, and the physician is max 45 char min 10. Otherwise you will receive an alert.
+![Create](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/c9e9869da5644136a71414c2030af4939795d9c8/screenshots/ss2.PNG)
+
+- Edit, delete and add new patients to the medical specialities created
+![Speciality](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/5e17b9acb12569522d906d4e00529c5d84c1da99/screenshots/ss3.png)
+
+- Create new patients to each speciality. Also delete and add new date to patients created
+![Patient](https://github.com/sofia-idarraga/Hospital-patient-record-FE/blob/5e17b9acb12569522d906d4e00529c5d84c1da99/screenshots/ss4.png)
+
